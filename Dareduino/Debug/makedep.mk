@@ -6,3 +6,5 @@ main.c
 
 src\gpio.c
 
+src\scheduler.c
+

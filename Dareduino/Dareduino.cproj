@@ -13,7 +13,7 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>ArduinoPlusPlus</AssemblyName>
-    <Name>ArduinoPlusPlus</Name>
+    <Name>Dareduino</Name>
     <RootNamespace>ArduinoPlusPlus</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
@@ -138,10 +138,16 @@
     <Compile Include="inc\macros.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="inc\scheduler.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\gpio.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\scheduler.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
