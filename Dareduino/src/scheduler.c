@@ -1,43 +1,91 @@
-/*
- * scheduler.c
- *
- * Created: 26-05-2020 17:46:19
- *  Author: Deepen
- */ 
-
-#include <avr/io.h>
+#include <stdio.h>
 #include <avr/interrupt.h>
+#include <string.h>
+#include <stdlib.h>
+#include <avr/sleep.h>
+
 #include "scheduler.h"
-#include "gpio.h"
 
-void TIMER1_COMPA_vect(void) __attribute__((signal));
+uint16_t stackUsed;
+uint16_t mainSp;
+uint16_t *currSp;
 
-void timerInit()
+
+taskTCB *head, *runPt;
+taskTCB *newTask;
+
+void TIMER1_COMPA_vect (void) __attribute__ ((signal,naked));
+
+void timerInit(void) 
 {
-	//Enable CTC mode by setting WGM12 bit. Set pre-scaler to 256 by setting CS12 bit
-	TCCR1B |= (1<<CS12) | (1<<WGM12);
-	
-	//Start TCNT1 from 0
-	TCNT1 = 0;
-	
-	//It will overflow when it reaches this compare value
-	OCR1A = 31250; 
-	
-	//Enable interrupt on match
-	TIMSK1 |= (1<<OCIE1A);
-	
-	//Enable interrupts
+    TCCR1B |= (1<<WGM12) | (1<<CS12);
+    TIMSK1 |= ( 1 << OCIE1A );
+	OCR1A = 61500;   
+}
+
+void TIMER1_COMPA_vect ( void )
+{
+  saveContext();
+  currSp = &(mainSp);
+  loadStackPointer();
+  if(runPt->status == HEAD)	
+  {
+    runPt = runPt->next;
+  }
+  else if(runPt->next == NULL)
+  {
+    runPt = head->next;  
+  }
+  else 
+  {
+	  runPt = runPt->next;	  
+  }
+  
+  currSp = &(runPt->sP);
+  loadStackPointer();
+		  
+  if(runPt->neverRun == TRUE)
+  {
 	sei();
-	
+	runPt->neverRun = FALSE;
+	runPt->fnPtr();
+  } 
+  else 
+  {	  
+	restoreContext();
+	asm volatile ("reti");			  
+  }
 }
 
-void taskScheduler()
+void OSinit(void)
 {
-	int a = pinRead(13);
-	pinWrite(13,!a);
+	cli();
+	timerInit();
+	head->next = NULL;
+	head->status = HEAD;
+	runPt = head;
+	stackUsed = 0;
 }
 
-void TIMER1_COMPA_vect()
+void OSlaunch(void)
 {
-	taskScheduler();
+  currSp = &mainSp;
+  sei();
+  while(1)
+  {
+	  printf("Scheduler started\n");
+  }
+}
+
+void createTask(void(*fPtr)(void), uint8_t priority, uint16_t stack_size)
+{ 
+  newTask = (taskTCB *)malloc(sizeof(taskTCB));
+  newTask->fnPtr = fPtr;
+  newTask->priority = priority;
+  newTask->neverRun = TRUE;
+  newTask->status = RUN;
+  newTask->sP = USER_STACK_SPACE - stackUsed;
+  stackUsed += stack_size;
+  newTask->next = head->next;
+  head->next = newTask;
 }

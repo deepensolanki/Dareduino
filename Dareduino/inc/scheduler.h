@@ -1,36 +1,41 @@
-/*
- * scheduler.h
- *
- * Created: 25-05-2020 15:27:39
- *  Author: Deepen
- */ 
+extern void timerInit(void);
+extern void OSinit(void);
+extern void OSlaunch(void);
+extern void createTask(void(*fPointer)(void), uint8_t priority, uint16_t stSize);
 
+#define USER_STACK_SPACE RAMEND - 100
 
-#ifndef SCHEDULER_H_
-#define SCHEDULER_H_
+#define TRUE	1
+#define FALSE	!TRUE
 
-#include <stdint-gcc.h>
+#define RUN 		0X00
+#define TERMINATE 	0X01
+#define WAIT		0X02
+#define HEAD		0x03
 
-#ifndef F_CPU 
-#define F_CPU 16000000
-#endif
+typedef struct taskTCB taskTCB;
 
-void taskScheduler();
-void timerInit();
-
-struct tcb{
+struct taskTCB {
 	
-	uint32_t sp;
-	struct tcb *next;
-	int32_t *blockPt;
-	uint32_t sleep;
+	void (*fnPtr)(void);
+	uint16_t sP;
 	uint8_t priority;
-	
-	};
-	
-typedef struct tcb tcbType;
+	char neverRun ;
+	taskTCB *next;
+	char *name;
+	uint8_t status;
+};
 
-#define contextSave()	\
+#define loadStackPointer() \
+asm volatile (  "lds    r26, currSp     \n\t"   \
+"lds    r27, currSp + 1 \n\t"   \
+"ld     r28, x+         \n\t"   \
+"out    __SP_L__, r28   \n\t"   \
+"ld     r29, x+         \n\t"   \
+"out    __SP_H__, r29   \n\t"   \
+);
+
+#define saveContext()	\
 asm volatile ( 	"push	r0		\n\t"	\
 "in	r0, __SREG__	\n\t"	\
 "cli			\n\t"	\
@@ -66,17 +71,18 @@ asm volatile ( 	"push	r0		\n\t"	\
 "push	r29		\n\t"	\
 "push	r30		\n\t"	\
 "push	r31		\n\t"	\
-"lds	r26, curr_sp	\n\t"	\
-"lds	r27, curr_sp + 1	\n\t"	\
-"in 	r0, __SP_L__	\n\t"	\
+"lds	r26, currSp	\n\t"	\
+"lds	r27, currSp + 1	\n\t"	\
+"in 	r0, 0x3d	\n\t"	\
 "st	x+, r0		\n\t"	\
-"in 	r0, __SP_H__	\n\t"	\
+"in 	r0, 0x3e	\n\t"	\
 "st	x+, r0		\n\t"	\
 );
 
-#define contextRestore()\
-asm volatile ( 	"lds 	r26, curr_sp	\n\t"	\
-"lds	r27, curr_sp + 1	\n\t"	\
+
+#define restoreContext()\
+asm volatile ( 	"lds 	r26, currSp	\n\t"	\
+"lds	r27, currSp + 1	\n\t"	\
 "ld	r28, x+		\n\t"	\
 "out	__SP_L__, r28	\n\t"	\
 "ld	r29, x+		\n\t"	\
@@ -116,15 +122,3 @@ asm volatile ( 	"lds 	r26, curr_sp	\n\t"	\
 "out 	__SREG__, r0	\n\t"	\
 "pop	r0		\n\t"	\
 );
-
-#define loadStackPointer()\
-asm volatile (  "lds    r26, curr_sp     \n\t"   \
-"lds    r27, curr_sp + 1 \n\t"   \
-"ld     r28, x+         \n\t"   \
-"out    __SP_L__, r28   \n\t"   \
-"ld     r29, x+         \n\t"   \
-"out    __SP_H__, r29   \n\t"   \
-);
-
-
-#endif /* SCHEDULER_H_ */

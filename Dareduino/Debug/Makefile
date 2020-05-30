@@ -41,7 +41,8 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../main.c \
 ../src/gpio.c \
-../src/scheduler.c
+../src/scheduler.c \
+../src/util.c
 
 
 PREPROCESSING_SRCS += 
@@ -53,22 +54,26 @@ ASM_SRCS +=
 OBJS +=  \
 main.o \
 src/gpio.o \
-src/scheduler.o
+src/scheduler.o \
+src/util.o
 
 OBJS_AS_ARGS +=  \
 main.o \
 src/gpio.o \
-src/scheduler.o
+src/scheduler.o \
+src/util.o
 
 C_DEPS +=  \
 main.d \
 src/gpio.d \
-src/scheduler.d
+src/scheduler.d \
+src/util.d
 
 C_DEPS_AS_ARGS +=  \
 main.d \
 src/gpio.d \
-src/scheduler.d
+src/scheduler.d \
+src/util.d
 
 OUTPUT_FILE_PATH +=Dareduino.elf
 
@@ -99,6 +104,13 @@ src/gpio.o: ../src/gpio.c
 	
 
 src/scheduler.o: ../src/scheduler.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)D:\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"D:\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\include" -I"../inc" -I"../src"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "D:\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/util.o: ../src/util.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)D:\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"D:\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\include" -I"../inc" -I"../src"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "D:\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

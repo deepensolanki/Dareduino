@@ -1,5 +1,4 @@
-#include <gpio.h>
-#include <macros.h>
+#include "gpio.h"
 
 void pinConfig(int pin, int io)
 {
@@ -66,8 +65,10 @@ int pinRead(int pin)
 		return (PIND && (1<<(pin-8)));
 	}
 	
-	if((pin>=8)&&(pin<=13))
+	else if((pin>=8)&&(pin<=13))
 	{
 		return (PINB && (1<<(pin-8)));
 	}
+	else return -1;
+	
 }	
