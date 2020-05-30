@@ -7,3 +7,5 @@ Development was done using an Arduino Uno (which has the Atmega328p on-board) wi
 To use Atmel Studio to easily program Atmega328p while inside the Arduino Uno board, refer to the following video
 
 https://blog.adafruit.com/2016/08/15/programming-the-arduino-uno-via-the-bootloader-without-programmer-arduinomonday/
+
+You can use the same pin numbers as on Arduino Uno
