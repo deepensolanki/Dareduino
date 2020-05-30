@@ -15,6 +15,7 @@ taskTCB *head, *runPt;
 taskTCB *newTask;
 
 void TIMER1_COMPA_vect (void) __attribute__ ((signal,naked));
+void taskScheduler(void) __attribute__((naked));
 
 void timerInit(void) 
 {
@@ -26,21 +27,7 @@ void timerInit(void)
 void TIMER1_COMPA_vect ( void )
 {
   saveContext();
-  currSp = &(mainSp);
-  loadStackPointer();
-  if(runPt->status == HEAD)	
-  {
-    runPt = runPt->next;
-  }
-  else if(runPt->next == NULL)
-  {
-    runPt = head->next;  
-  }
-  else 
-  {
-	  runPt = runPt->next;	  
-  }
-  
+  taskScheduler();	
   currSp = &(runPt->sP);
   loadStackPointer();
 		  
@@ -73,7 +60,7 @@ void OSlaunch(void)
   sei();
   while(1)
   {
-	  printf("Scheduler started\n");
+	  printf("Scheduler running\n");
   }
 }
 
@@ -86,6 +73,24 @@ void createTask(void(*fPtr)(void), uint8_t priority, uint16_t stack_size)
   newTask->status = RUN;
   newTask->sP = USER_STACK_SPACE - stackUsed;
   stackUsed += stack_size;
+  
   newTask->next = head->next;
   head->next = newTask;
+}
+
+void taskScheduler(void)
+{
+  if(runPt->status == HEAD)
+  {
+	  runPt = runPt->next;
+  }
+  else if(runPt->next == NULL)
+  {
+	  runPt = head->next;
+  }
+  else
+  {
+	  runPt = runPt->next;
+  }
+  asm volatile("ret");	
 }
