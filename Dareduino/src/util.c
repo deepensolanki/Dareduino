@@ -13,15 +13,15 @@
 #endif
 
 #ifndef BAUD
-#define BAUD 38400
+#define BAUD 9600
 #endif
 
-int uart_putch ( char ch, FILE *stream );
-int uart_getch ( FILE *stream );
+int uart_putch (char ch, FILE *stream);
+int uart_getch (FILE *stream);
 
-FILE uart_str = FDEV_SETUP_STREAM ( uart_putch, uart_getch, _FDEV_SETUP_RW );
+FILE uart_str = FDEV_SETUP_STREAM (uart_putch, uart_getch, _FDEV_SETUP_RW);
 
-void uart_init ( void )
+void uart_init(void)
 {
 	UBRR0H = (((F_CPU/BAUD)/16)-1)>>8;
 	UBRR0L = (((F_CPU/BAUD)/16)-1);
@@ -50,35 +50,35 @@ void ansi_me(void)
 void uart_flush ( void )
 {
 	unsigned char dummy;
-	while ( UCSR0A & (1<<RXC0) )
+	while (UCSR0A & (1<<RXC0))
 	dummy =  UDR0;
 }
 
 int uart_putch ( char ch, FILE *stream )
 {
-	if ( ch == '\n' )
-	uart_putch ( '\r', stream );
-	while (!(UCSR0A & (1<<UDRE0)));
-	UDR0=ch;
+	if(ch == '\n')
+	uart_putch('\r', stream);
+	while(!(UCSR0A & (1<<UDRE0)));
+	UDR0 = ch;
 	return 0;
 }
 
-int uart_getch ( FILE *stream )
+int uart_getch(FILE *stream)
 {
 	unsigned char ch = '\0';
-	while ( !(UCSR0A & (1<<RXC0)));
+	while (!(UCSR0A & (1<<RXC0)));
 	ch = UDR0;
 
 	return ch;
 }
 
-void init_print ( void )
+void consoleDisplay(void)
 {
 	stdout = stdin = &uart_str;
-	uart_init ();
-	ansi_me ();
-	ansi_clear_screen ();
-	ansi_me ();
-	ansi_clear_screen ();
-	uart_flush ();
+	uart_init();
+	ansi_me();
+	ansi_clear_screen();
+	ansi_me();
+	ansi_clear_screen();
+	uart_flush();
 }

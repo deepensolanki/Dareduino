@@ -9,6 +9,6 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
-extern void init_print ( void );
+extern void consoleDisplay ( void );
 
 #endif /* UTIL_H_ */

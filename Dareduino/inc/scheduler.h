@@ -1,17 +1,23 @@
 extern void timerInit(void);
 extern void OSinit(void);
-extern void OSlaunch(void);
-extern void createTask(void(*fPointer)(void), uint8_t priority, uint16_t stSize);
+extern void OSlaunch(uint8_t);
+extern void createTask(void(*fPointer)(void), uint8_t priority, uint16_t stSize, char *id);
+extern void sortTaskList(void);
+extern void OSwait(void);
 
 #define USER_STACK_SPACE RAMEND - 100
 
 #define TRUE	1
 #define FALSE	!TRUE
 
-#define RUN 		0X00
-#define TERMINATE 	0X01
+#define READY 		0X00
 #define WAIT		0X02
+
 #define HEAD		0x03
+
+#define ROUNDROBIN		0x50
+#define RMS				0x51 
+#define PRIORITYBASED	0x52
 
 typedef struct taskTCB taskTCB;
 
@@ -22,7 +28,7 @@ struct taskTCB {
 	uint8_t priority;
 	char neverRun ;
 	taskTCB *next;
-	char *name;
+	char *id;
 	uint8_t status;
 };
 

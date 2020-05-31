@@ -1,27 +1,31 @@
 #include <stdio.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/delay.h>
 
 #include "scheduler.h"
 #include "util.h"
 #include "gpio.h"
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
 void onTask(void);
 void offTask(void);
+void rTask(void);
+void qTask(void);
 
 int main (void)
 {
-	init_print ();
+	consoleDisplay();
 	pinConfig(13,OUTPUT);
 	
 	OSinit();
 	
-	createTask(&onTask, 1, 50);
-	createTask(&offTask, 2, 50);
+	createTask(&onTask, 20, 50, "onTask");
+	createTask(&rTask, 1, 50, "rTask");
+	createTask(&qTask, 12, 50, "qTask");
+	createTask(&offTask, 2, 50, "offTask");
 
-	OSlaunch();
-	
+	OSlaunch(PRIORITYBASED);
+
 	return 0;
 }
 
@@ -43,3 +47,18 @@ void offTask(void)
 	}
 }
 
+void rTask()
+{
+	while (1)
+	{
+		printf("rTask\n");
+	}	
+}
+
+void qTask()
+{
+	while (1)
+	{
+		printf("qTask\n");
+	}
+}
