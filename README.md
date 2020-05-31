@@ -8,4 +8,6 @@ To use Atmel Studio to easily program Atmega328p while inside the Arduino Uno bo
 
 https://blog.adafruit.com/2016/08/15/programming-the-arduino-uno-via-the-bootloader-without-programmer-arduinomonday/
 
-You can use the same pin numbers as on Arduino Uno
+This build also includes gpio drivers. You can use the same pin numbers as on Arduino Uno. Please read the "Notes" document for illustrations on usage. 
+
+
