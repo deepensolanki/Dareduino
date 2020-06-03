@@ -5,7 +5,7 @@ d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/a
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_copy_data.o)
                               main.o (__do_copy_data)
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_clear_bss.o)
-                              src/scheduler.o (__do_clear_bss)
+                              main.o (__do_clear_bss)
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(malloc.o)
                               src/scheduler.o (malloc)
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
@@ -13,9 +13,9 @@ d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/.
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(iob.o)
                               src/util.o (__iob)
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(printf.o)
-                              src/scheduler.o (printf)
+                              main.o (printf)
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(puts.o)
-                              main.o (puts)
+                              src/scheduler.o (puts)
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
                               d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(printf.o) (vfprintf)
 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
@@ -35,7 +35,8 @@ Common symbol       size              file
 currSp              0x2               src/scheduler.o
 t                   0x2               src/scheduler.o
 tasksCreated        0x1               src/scheduler.o
-semaphore           0x2               src/scheduler.o
+sem                 0x2               main.o
+semaphore           0x2               main.o
 schedulerType       0x1               src/scheduler.o
 runPt               0x2               src/scheduler.o
 __brkval            0x2               d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(malloc.o)
@@ -296,7 +297,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0xf92
+.text           0x00000000      0xf66
  *(.vectors)
  .vectors       0x00000000       0x68 D:/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -382,101 +383,100 @@ END GROUP
                 0x000000a2                __vector_20
                 0x000000a6                . = ALIGN (0x2)
  *(.text.*)
- .text.rTask    0x000000a6        0xa main.o
+ .text.rTask    0x000000a6       0x12 main.o
                 0x000000a6                rTask
- .text.qTask    0x000000b0        0xa main.o
-                0x000000b0                qTask
- .text.onTask   0x000000ba       0x16 main.o
-                0x000000ba                onTask
- .text.offTask  0x000000d0       0x16 main.o
-                0x000000d0                offTask
- .text.main     0x000000e6       0x68 main.o
-                0x000000e6                main
+ .text.qTask    0x000000b8       0x12 main.o
+                0x000000b8                qTask
+ .text.onTask   0x000000ca       0x6a main.o
+                0x000000ca                onTask
+ .text.offTask  0x00000134       0x76 main.o
+                0x00000134                offTask
+ .text.main     0x000001aa       0x80 main.o
+                0x000001aa                main
  .text.pinConfig
-                0x0000014e       0x96 src/gpio.o
-                0x0000014e                pinConfig
+                0x0000022a       0x96 src/gpio.o
+                0x0000022a                pinConfig
  .text.pinWrite
-                0x000001e4       0x98 src/gpio.o
-                0x000001e4                pinWrite
- .text.swapNodes
-                0x0000027c       0xd6 src/scheduler.o
-                0x0000027c                swapNodes
- .text.sortTaskList
-                0x00000352       0x56 src/scheduler.o
-                0x00000352                sortTaskList
+                0x000002c0       0x98 src/gpio.o
+                0x000002c0                pinWrite
  .text.timerInit
-                0x000003a8       0x22 src/scheduler.o
-                0x000003a8                timerInit
- .text.OSinit   0x000003ca       0x2c src/scheduler.o
-                0x000003ca                OSinit
+                0x00000358       0x22 src/scheduler.o
+                0x00000358                timerInit
+ .text.OSinit   0x0000037a       0x2c src/scheduler.o
+                0x0000037a                OSinit
  .text.OSlaunch
-                0x000003f6       0x52 src/scheduler.o
-                0x000003f6                OSlaunch
+                0x000003a6       0x4a src/scheduler.o
+                0x000003a6                OSlaunch
  .text.createTask
-                0x00000448       0x8e src/scheduler.o
-                0x00000448                createTask
+                0x000003f0       0x92 src/scheduler.o
+                0x000003f0                createTask
  .text.taskScheduler
-                0x000004d6       0x44 src/scheduler.o
-                0x000004d6                taskScheduler
+                0x00000482       0x44 src/scheduler.o
+                0x00000482                taskScheduler
  .text.__vector_11
-                0x0000051a       0xf0 src/scheduler.o
-                0x0000051a                __vector_11
+                0x000004c6       0xf0 src/scheduler.o
+                0x000004c6                __vector_11
+ .text.OSwait   0x000005b6       0x14 src/scheduler.o
+                0x000005b6                OSwait
+ .text.OSsignal
+                0x000005ca       0x14 src/scheduler.o
+                0x000005ca                OSsignal
  .text.uart_putch
-                0x0000060a       0x24 src/util.o
-                0x0000060a                uart_putch
+                0x000005de       0x24 src/util.o
+                0x000005de                uart_putch
  .text.uart_getch
-                0x0000062e       0x12 src/util.o
-                0x0000062e                uart_getch
+                0x00000602       0x12 src/util.o
+                0x00000602                uart_getch
  .text.uart_init
-                0x00000640       0x18 src/util.o
-                0x00000640                uart_init
+                0x00000614       0x18 src/util.o
+                0x00000614                uart_init
  .text.ansi_clear_screen
-                0x00000658       0x56 src/util.o
-                0x00000658                ansi_clear_screen
- .text.ansi_me  0x000006ae       0x3e src/util.o
-                0x000006ae                ansi_me
+                0x0000062c       0x56 src/util.o
+                0x0000062c                ansi_clear_screen
+ .text.ansi_me  0x00000682       0x3e src/util.o
+                0x00000682                ansi_me
  .text.uart_flush
-                0x000006ec       0x1a src/util.o
-                0x000006ec                uart_flush
+                0x000006c0       0x1a src/util.o
+                0x000006c0                uart_flush
  .text.consoleDisplay
-                0x00000706       0x2a src/util.o
-                0x00000706                consoleDisplay
+                0x000006da       0x2a src/util.o
+                0x000006da                consoleDisplay
  .text.avr-libc
-                0x00000730      0x242 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(malloc.o)
-                0x00000730                malloc
-                0x00000860                free
+                0x00000704      0x242 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(malloc.o)
+                0x00000704                malloc
+                0x00000834                free
  .text.avr-libc
-                0x00000972       0x78 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
-                0x00000972                fputc
+                0x00000946       0x78 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
+                0x00000946                fputc
  .text.avr-libc
-                0x000009ea       0x2c d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(printf.o)
-                0x000009ea                printf
+                0x000009be       0x2c d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(printf.o)
+                0x000009be                printf
  .text.avr-libc
-                0x00000a16       0x60 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(puts.o)
-                0x00000a16                puts
+                0x000009ea       0x60 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(puts.o)
+                0x000009ea                puts
  .text.avr-libc
-                0x00000a76      0x3c2 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
-                0x00000a76                vfprintf
+                0x00000a4a      0x3c2 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                0x00000a4a                vfprintf
  .text.avr-libc
-                0x00000e38       0x16 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
-                0x00000e38                strnlen_P
+                0x00000e0c       0x16 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+                0x00000e0c                strnlen_P
  .text.avr-libc
-                0x00000e4e       0x16 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen.o)
-                0x00000e4e                strnlen
+                0x00000e22       0x16 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen.o)
+                0x00000e22                strnlen
  .text.avr-libc
-                0x00000e64       0xbc d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
-                0x00000e64                __ultoa_invert
+                0x00000e38       0xbc d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+                0x00000e38                __ultoa_invert
  .text.libgcc.prologue
-                0x00000f20       0x38 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_prologue.o)
-                0x00000f20                __prologue_saves__
+                0x00000ef4       0x38 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_prologue.o)
+                0x00000ef4                __prologue_saves__
  .text.libgcc.prologue
-                0x00000f58       0x36 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_epilogue.o)
-                0x00000f58                __epilogue_restores__
-                0x00000f8e                . = ALIGN (0x2)
+                0x00000f2c       0x36 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_epilogue.o)
+                0x00000f2c                __epilogue_restores__
+                0x00000f62                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000f8e        0x0 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00000f8e                _exit
-                0x00000f8e                exit
+ .fini9         0x00000f62        0x0 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00000f62                _exit
+                0x00000f62                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -495,11 +495,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000f8e        0x4 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000f62        0x4 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000f92                _etext = .
+                0x00000f66                _etext = .
 
-.data           0x00800100       0x62 load address 0x00000f92
+.data           0x00800100       0x86 load address 0x00000f66
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x6 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(malloc.o)
@@ -514,46 +514,50 @@ END GROUP
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00800114       0x1b main.o
+                0x00800114       0x3d main.o
+                                 0x49 (size before relaxing)
  .rodata.str1.1
-                0x0080012f       0x33 src/scheduler.o
+                0x00800151       0x34 src/scheduler.o
  *(.gnu.linkonce.r*)
-                0x00800162                . = ALIGN (0x2)
-                0x00800162                _edata = .
-                0x00800162                PROVIDE (__data_end, .)
+                0x00800186                . = ALIGN (0x2)
+ *fill*         0x00800185        0x1 
+                0x00800186                _edata = .
+                0x00800186                PROVIDE (__data_end, .)
 
-.bss            0x00800162       0x1e
-                0x00800162                PROVIDE (__bss_start, .)
+.bss            0x00800186       0x20
+                0x00800186                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
- COMMON         0x00800162       0x14 src/scheduler.o
-                0x00800162                currSp
-                0x00800164                t
-                0x00800166                tasksCreated
-                0x00800167                semaphore
-                0x00800169                schedulerType
-                0x0080016a                runPt
-                0x0080016c                head
-                0x0080016e                newTask
-                0x00800170                stackUsed
-                0x00800172                tempPt
-                0x00800174                mainSp
- COMMON         0x00800176        0x4 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(malloc.o)
-                0x00800176                __brkval
-                0x00800178                __flp
- COMMON         0x0080017a        0x6 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(iob.o)
-                0x0080017a                __iob
-                0x00800180                PROVIDE (__bss_end, .)
-                0x00000f92                __data_load_start = LOADADDR (.data)
-                0x00000ff4                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800186        0x4 main.o
+                0x00800186                sem
+                0x00800188                semaphore
+ COMMON         0x0080018a       0x12 src/scheduler.o
+                0x0080018a                currSp
+                0x0080018c                t
+                0x0080018e                tasksCreated
+                0x0080018f                schedulerType
+                0x00800190                runPt
+                0x00800192                head
+                0x00800194                newTask
+                0x00800196                stackUsed
+                0x00800198                tempPt
+                0x0080019a                mainSp
+ COMMON         0x0080019c        0x4 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(malloc.o)
+                0x0080019c                __brkval
+                0x0080019e                __flp
+ COMMON         0x008001a0        0x6 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(iob.o)
+                0x008001a0                __iob
+                0x008001a6                PROVIDE (__bss_end, .)
+                0x00000f66                __data_load_start = LOADADDR (.data)
+                0x00000fec                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800180        0x0
+.noinit         0x008001a6        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800180                _end = .
-                0x00800180                PROVIDE (__heap_start, .)
+                0x008001a6                _end = .
+                0x008001a6                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -641,54 +645,55 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x123b
+.debug_info     0x00000000     0x1181
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 D:/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x327 main.o
- .debug_info    0x0000091b      0x108 src/gpio.o
- .debug_info    0x00000a23      0x451 src/scheduler.o
- .debug_info    0x00000e74      0x3c7 src/util.o
+ .debug_info    0x000005f4      0x2aa main.o
+ .debug_info    0x0000089e      0x108 src/gpio.o
+ .debug_info    0x000009a6      0x414 src/scheduler.o
+ .debug_info    0x00000dba      0x3c7 src/util.o
 
-.debug_abbrev   0x00000000      0xac5
+.debug_abbrev   0x00000000      0xaf8
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 D:/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2       0xbb main.o
- .debug_abbrev  0x0000065d       0x7c src/gpio.o
- .debug_abbrev  0x000006d9      0x208 src/scheduler.o
- .debug_abbrev  0x000008e1      0x1e4 src/util.o
+ .debug_abbrev  0x000005a2      0x105 main.o
+ .debug_abbrev  0x000006a7       0x7c src/gpio.o
+ .debug_abbrev  0x00000723      0x1f1 src/scheduler.o
+ .debug_abbrev  0x00000914      0x1e4 src/util.o
 
-.debug_line     0x00000000      0x8f5
+.debug_line     0x00000000      0x926
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 D:/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000133      0x123 main.o
- .debug_line    0x00000256      0x167 src/gpio.o
- .debug_line    0x000003bd      0x35a src/scheduler.o
- .debug_line    0x00000717      0x1de src/util.o
+ .debug_line    0x00000133      0x1d6 main.o
+ .debug_line    0x00000309      0x167 src/gpio.o
+ .debug_line    0x00000470      0x2d8 src/scheduler.o
+ .debug_line    0x00000748      0x1de src/util.o
 
-.debug_frame    0x00000000      0x234
+.debug_frame    0x00000000      0x26c
  *(.debug_frame)
- .debug_frame   0x00000000       0x64 main.o
- .debug_frame   0x00000064       0x44 src/gpio.o
- .debug_frame   0x000000a8       0xe8 src/scheduler.o
- .debug_frame   0x00000190       0xa4 src/util.o
+ .debug_frame   0x00000000       0xbc main.o
+ .debug_frame   0x000000bc       0x44 src/gpio.o
+ .debug_frame   0x00000100       0xc8 src/scheduler.o
+ .debug_frame   0x000001c8       0xa4 src/util.o
 
-.debug_str      0x00000000      0x5af
+.debug_str      0x00000000      0x5a4
  *(.debug_str)
  .debug_str     0x00000000      0x208 D:/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_str     0x00000208      0x19a main.o
-                                0x1d8 (size before relaxing)
- .debug_str     0x000003a2       0x1e src/gpio.o
+ .debug_str     0x00000208      0x193 main.o
+                                0x1cc (size before relaxing)
+ .debug_str     0x0000039b       0x27 src/gpio.o
                                 0x187 (size before relaxing)
- .debug_str     0x000003c0      0x15c src/scheduler.o
-                                0x2ee (size before relaxing)
- .debug_str     0x0000051c       0x93 src/util.o
+ .debug_str     0x000003c2      0x14f src/scheduler.o
+                                0x2d9 (size before relaxing)
+ .debug_str     0x00000511       0x93 src/util.o
                                 0x20a (size before relaxing)
 
-.debug_loc      0x00000000      0x634
+.debug_loc      0x00000000      0x70b
  *(.debug_loc)
- .debug_loc     0x00000000      0x244 src/gpio.o
- .debug_loc     0x00000244      0x2db src/scheduler.o
- .debug_loc     0x0000051f      0x115 src/util.o
+ .debug_loc     0x00000000      0x1a6 main.o
+ .debug_loc     0x000001a6      0x244 src/gpio.o
+ .debug_loc     0x000003ea      0x20c src/scheduler.o
+ .debug_loc     0x000005f6      0x115 src/util.o
 
 .debug_macinfo
  *(.debug_macinfo)

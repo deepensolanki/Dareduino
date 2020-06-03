@@ -1,7 +1,11 @@
+#ifndef F_CPU
+#define F_CPU 16000000
+#endif
+
 #include <stdio.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/delay.h>
+#include <util/delay.h>
 
 #include "scheduler.h"
 #include "util.h"
@@ -12,19 +16,25 @@ void offTask(void);
 void rTask(void);
 void qTask(void);
 
+volatile int *semaphore;
+volatile int sem;
+
 int main (void)
 {
 	consoleDisplay();
 	pinConfig(13,OUTPUT);
 	
+	sem = 1;
+	semaphore = &sem;
+	
 	OSinit();
 	
-	createTask(&onTask, 20, 50, "onTask");
-	createTask(&rTask, 1, 50, "rTask");
-	createTask(&qTask, 12, 50, "qTask");
-	createTask(&offTask, 2, 50, "offTask");
+	createTask(&onTask, 20, 150, "onTask");
+	createTask(&rTask, 1, 150, "rTask");
+	createTask(&qTask, 12, 150, "qTask");
+	createTask(&offTask, 2, 150, "offTask");
 
-	OSlaunch(PRIORITYBASED);
+	OSlaunch(ROUNDROBIN);
 
 	return 0;
 }
@@ -32,18 +42,25 @@ int main (void)
 void onTask(void)
 {
 	while (1)
-	{	
-		printf("onTask\n");
+	{
+		OSwait(semaphore);
+		printf("\nOnTask %d", (*semaphore));
 		pinWrite(13,1);
+		OSsignal(semaphore);
+		printf("\nOnTask %d", (*semaphore));
 	}
 }
 
 void offTask(void)
 {
 	while (1)
-	{	
-		printf("offTask\n");
+	{
+		OSwait(semaphore);
+		printf("\nOffTask %d", (*semaphore));
+		printf("\nOfftask");
 		pinWrite(13,0);
+		OSsignal(semaphore);
+		printf("\nOffTask %d", (*semaphore));
 	}
 }
 
@@ -51,14 +68,14 @@ void rTask()
 {
 	while (1)
 	{
-		printf("rTask\n");
-	}	
+		printf("\nrTask");
+	}
 }
 
 void qTask()
 {
 	while (1)
 	{
-		printf("qTask\n");
+		printf("\nqTask");
 	}
 }

@@ -2,8 +2,8 @@ extern void timerInit(void);
 extern void OSinit(void);
 extern void OSlaunch(uint8_t);
 extern void createTask(void(*fPointer)(void), uint8_t priority, uint16_t stSize, char *id);
-extern void sortTaskList(void);
-extern void OSwait(void);
+extern void OSwait(volatile int *s);
+extern void OSsignal(volatile int *s);
 
 #define USER_STACK_SPACE RAMEND - 100
 
@@ -16,14 +16,15 @@ extern void OSwait(void);
 #define HEAD		0x03
 
 #define ROUNDROBIN		0x50
-#define RMS				0x51 
+#define RMS				0x51
 #define PRIORITYBASED	0x52
 
 typedef struct taskTCB taskTCB;
 
-struct taskTCB {
+struct taskTCB{
 	
 	void (*fnPtr)(void);
+	int *blocked;
 	uint16_t sP;
 	uint8_t priority;
 	char neverRun ;
@@ -84,7 +85,6 @@ asm volatile ( 	"push	r0		\n\t"	\
 "in 	r0, 0x3e	\n\t"	\
 "st	x+, r0		\n\t"	\
 );
-
 
 #define restoreContext()\
 asm volatile ( 	"lds 	r26, currSp	\n\t"	\
