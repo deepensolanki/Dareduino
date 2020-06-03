@@ -24,7 +24,7 @@ int main (void)
 	consoleDisplay();
 	pinConfig(13,OUTPUT);
 	
-	sem = 1;
+	sem = 2;
 	semaphore = &sem;
 	
 	OSinit();

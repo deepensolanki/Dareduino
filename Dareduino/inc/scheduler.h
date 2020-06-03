@@ -4,6 +4,7 @@ extern void OSlaunch(uint8_t);
 extern void createTask(void(*fPointer)(void), uint8_t priority, uint16_t stSize, char *id);
 extern void OSwait(volatile int *s);
 extern void OSsignal(volatile int *s);
+extern void OSsuspend(void);
 
 #define USER_STACK_SPACE RAMEND - 100
 
@@ -24,7 +25,7 @@ typedef struct taskTCB taskTCB;
 struct taskTCB{
 	
 	void (*fnPtr)(void);
-	int *blocked;
+	volatile int *blocked;
 	uint16_t sP;
 	uint8_t priority;
 	char neverRun ;

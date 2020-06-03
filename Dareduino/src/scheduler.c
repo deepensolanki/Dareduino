@@ -96,6 +96,7 @@ void taskScheduler(void)
 	if(runPt->status == HEAD)
 	{
 		runPt = runPt->next;
+
 	}
 	else if(runPt->next == NULL)
 	{
@@ -105,19 +106,44 @@ void taskScheduler(void)
 	{
 		runPt = runPt->next;
 	}
+	
+	while(runPt->blocked != NULL)
+		runPt = runPt->next;
+	
 	asm volatile("ret");
+}
+
+void OSsuspend(void)
+{
+	TIMER1_COMPA_vect();
 }
 
 void OSwait(volatile int *s)
 {
 	cli();
 	(*s)--;
+	if((*s) < 0)
+	{
+		runPt->blocked = s;
+		sei();
+		OSsuspend();
+	}
 	sei();
 }
 
 void OSsignal(volatile int *s)
 {
+	taskTCB *temp;
 	cli();
 	(*s)++;
+	if((*s) < 0)
+	{
+		temp = runPt->next;
+		while(temp->blocked != s)
+		{
+			temp = temp->next;
+		}
+		temp->blocked = NULL;
+	}
 	sei();
 }
