@@ -24,7 +24,7 @@ int main (void)
 	consoleDisplay();
 	pinConfig(13,OUTPUT);
 	
-	sem = 2;
+	sem = 1;
 	semaphore = &sem;
 	
 	OSinit();
@@ -41,26 +41,24 @@ int main (void)
 
 void onTask(void)
 {
+
 	while (1)
 	{
-		OSwait(semaphore);
-		printf("\nOnTask %d", (*semaphore));
 		pinWrite(13,1);
-		OSsignal(semaphore);
-		printf("\nOnTask %d", (*semaphore));
+		printf("\nOnTask");
 	}
 }
 
 void offTask(void)
 {
+	static int i = 0;
+	int y;
 	while (1)
 	{
-		OSwait(semaphore);
-		printf("\nOffTask %d", (*semaphore));
-		printf("\nOfftask");
+		y = FIFOput(i);
+		printf("\nOfftask %d", y);
+		i += 1;
 		pinWrite(13,0);
-		OSsignal(semaphore);
-		printf("\nOffTask %d", (*semaphore));
 	}
 }
 
@@ -74,8 +72,10 @@ void rTask()
 
 void qTask()
 {
+	int x;
 	while (1)
 	{
-		printf("\nqTask");
+		x = FIFOget();
+		printf("\nqTask %d", x);
 	}
 }

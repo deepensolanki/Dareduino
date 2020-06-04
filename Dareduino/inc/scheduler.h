@@ -5,11 +5,14 @@ extern void createTask(void(*fPointer)(void), uint8_t priority, uint16_t stSize,
 extern void OSwait(volatile int *s);
 extern void OSsignal(volatile int *s);
 extern void OSsuspend(void);
+extern void FIFOinit(void);
+extern int FIFOput(int data);
+extern int FIFOget(void);
 
 #define USER_STACK_SPACE RAMEND - 100
 
 #define TRUE	1
-#define FALSE	!TRUE
+#define FALSE	0
 
 #define READY 		0X00
 #define WAIT		0X02
@@ -19,6 +22,8 @@ extern void OSsuspend(void);
 #define ROUNDROBIN		0x50
 #define RMS				0x51
 #define PRIORITYBASED	0x52
+
+#define FIFOSIZE 100
 
 typedef struct taskTCB taskTCB;
 

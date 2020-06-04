@@ -16,8 +16,14 @@ uint16_t *currSp;
 
 uint8_t tasksCreated, schedulerType;
 
+volatile int *currSize;
+volatile int currentSize;
+
 taskTCB *head, *runPt, *tempPt;
 taskTCB *newTask, *t;
+
+int FIFO[FIFOSIZE];
+uint8_t putI, getI;
 
 void TIMER1_COMPA_vect (void) __attribute__ ((signal,naked));
 void taskScheduler(void) __attribute__((naked));
@@ -58,6 +64,7 @@ void OSinit(void)
 	runPt = head;
 	stackUsed = 0;
 	tasksCreated = 0;
+	FIFOinit();
 }
 
 void OSlaunch(uint8_t schType)
@@ -138,7 +145,7 @@ void OSsignal(volatile int *s)
 	(*s)++;
 	if((*s) < 0)
 	{
-		temp = runPt->next;
+		temp = head->next;
 		while(temp->blocked != s)
 		{
 			temp = temp->next;
@@ -146,4 +153,36 @@ void OSsignal(volatile int *s)
 		temp->blocked = NULL;
 	}
 	sei();
+}
+
+void FIFOinit()
+{
+
+	currentSize = 0;
+	currSize = &currentSize;
+	putI = 0;
+	getI = 0;
+}
+
+
+int FIFOput(int data)
+{
+	if((*currSize) >= FIFOSIZE)
+		return -1;
+	else
+	{
+		FIFO[putI] = data;
+		putI = (putI + 1) % FIFOSIZE;
+		OSsignal(currSize);
+		return 0;
+	}
+}
+
+int FIFOget()
+{
+	int data;
+	OSwait(currSize);
+	data = FIFO[getI];
+	getI = (getI + 1) % FIFOSIZE;
+	return data;
 }
