@@ -17,7 +17,7 @@ main.d main.o: .././main.c \
  d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- ../inc/scheduler.h ../inc/util.h ../inc/gpio.h
+ ../inc/scheduler.h ../inc/util.h ../inc/gpio.h ../inc/adc.h
 
 d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h:
 
@@ -60,3 +60,5 @@ d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 ../inc/util.h:
 
 ../inc/gpio.h:
+
+../inc/adc.h:

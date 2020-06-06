@@ -9,6 +9,7 @@
 #include <util/delay.h>
 
 #include "scheduler.h"
+#include "adc.h"
 
 uint16_t stackUsed;
 uint16_t mainSp;
@@ -59,6 +60,7 @@ void OSinit(void)
 {
 	cli();
 	timerInit();
+	adcInit();
 	head->next = NULL;
 	head->status = HEAD;
 	runPt = head;

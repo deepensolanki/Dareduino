@@ -10,6 +10,7 @@
 #include "scheduler.h"
 #include "util.h"
 #include "gpio.h"
+#include "adc.h"
 
 void onTask(void);
 void offTask(void);
@@ -64,9 +65,11 @@ void offTask(void)
 
 void rTask()
 {
+	int y;
 	while (1)
 	{
-		printf("\nrTask");
+		y = adcRead(0);
+		printf("\nrTask %d", y);
 	}
 }
 

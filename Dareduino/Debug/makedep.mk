@@ -4,6 +4,8 @@
 
 main.c
 
+src\adc.c
+
 src\gpio.c
 
 src\scheduler.c
